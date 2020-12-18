@@ -22,14 +22,28 @@ export const reducer = (state=initialState, action) => {
         case ADD_FEATURE:
             console.log("adding new feature in reducer with id", action.payload); 
             // grab newFeature object from additionalFeatures 
+            // check to see if feature has already been added before changing state
             const newFeatureObj = state.additionalFeatures.filter(feature => feature.id === action.payload)[0];
-            return {
-              ...state,
-                car: {
-                ...state.car,
-                  features:  [...state.car.features, {...newFeatureObj}]
+            const newFeatureName = newFeatureObj.name;
+            console.log(newFeatureName);
+            if (!state.car.features.reduce((isAdded, feature) => {
+              if (feature.name === newFeatureName){
+                return true
               }
+              return false
+            }, false)){
+              return {
+                ...state,
+                  car: {
+                  ...state.car,
+                    features:  [...state.car.features, {...newFeatureObj}]
+                }
+              }
+            } else{
+              console.log('feature already added')
+              return state
             }
+            
                 
         case REMOVE_FEATURE:
           console.log("removing feature in reducer with id", action.payload); 
