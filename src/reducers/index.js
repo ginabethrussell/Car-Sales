@@ -20,7 +20,7 @@ const initialState = {
 export const reducer = (state=initialState, action) => {
     switch(action.type){
         case ADD_FEATURE:
-            console.log("adding new feature in reducer"); 
+            console.log("adding new feature in reducer with id", action.payload); 
             // grab newFeature object from additionalFeatures 
             const newFeatureObj = state.additionalFeatures.filter(feature => feature.id === action.payload)[0];
             return {
@@ -32,7 +32,16 @@ export const reducer = (state=initialState, action) => {
             }
                 
         case REMOVE_FEATURE:
-            return state;
+          console.log("removing feature in reducer with id", action.payload); 
+          // grab feature object from features 
+          const filteredFeatures = state.car.features.filter(feature => feature.id !== action.payload);
+          return {
+            ...state,
+              car: {
+              ...state.car,
+                features:  [...filteredFeatures]
+            }
+          }
         default:
             return state
     }
