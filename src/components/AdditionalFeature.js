@@ -2,6 +2,7 @@ import React from 'react';
 import { addFeature } from '../actions';
 import {connect} from 'react-redux';
 
+// props passed from AdditionalFeatures component
 const AdditionalFeature = props => {
   return (
     <li>

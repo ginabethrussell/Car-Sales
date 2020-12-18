@@ -2,7 +2,7 @@ const ADD_FEATURE = 'ADD_FEATURE';
 const REMOVE_FEATURE = 'REMOVE_FEATURE';
 
 const addFeature = (itemId) => {
-    console.log("adding Feature", itemId)
+    console.log("creating addingFeature action, payload", itemId)
     return { type: ADD_FEATURE, payload: itemId }
 }
 
