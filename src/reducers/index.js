@@ -20,12 +20,12 @@ const initialState = {
 export const reducer = (state=initialState, action) => {
     switch(action.type){
         case ADD_FEATURE:
-            console.log("adding new feature in reducer with id", action.payload); 
+            //console.log("adding new feature in reducer with id", action.payload); 
             // grab newFeature object from additionalFeatures 
             // check to see if feature has already been added before changing state
             const newFeatureObj = state.additionalFeatures.filter(feature => feature.id === action.payload)[0];
             const newFeatureName = newFeatureObj.name;
-            console.log(newFeatureName);
+           
             if (!state.car.features.reduce((isAdded, feature) => {
               if (feature.name === newFeatureName){
                 return true
@@ -34,23 +34,26 @@ export const reducer = (state=initialState, action) => {
             }, false)){
               return {
                 ...state,
+                  additionalPrice: state.additionalPrice += newFeatureObj.price ,
                   car: {
                   ...state.car,
                     features:  [...state.car.features, {...newFeatureObj}]
                 }
               }
             } else{
-              console.log('feature already added')
+              // console.log('feature already added')
               return state
             }
             
                 
         case REMOVE_FEATURE:
-          console.log("removing feature in reducer with id", action.payload); 
+          // console.log("removing feature in reducer with id", action.payload); 
           // grab feature object from features 
+          const featureToSubtract = state.car.features.filter(feature => feature.id === action.payload)[0];
           const filteredFeatures = state.car.features.filter(feature => feature.id !== action.payload);
           return {
             ...state,
+              additionalPrice: state.additionalPrice -= featureToSubtract.price,
               car: {
               ...state.car,
                 features:  [...filteredFeatures]
