@@ -1,5 +1,7 @@
 html, body, #root {
   height: 100%;
+  height: auto;
+  min-height: 100vh;
 }
 body {
   background: #333;
@@ -7,6 +9,22 @@ body {
   display: grid;
   padding: 3em;
   place-items: center;
+}
+.home-wrapper {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+  align-content: space-around;
+ 
+}
+.home-wrapper h1 {
+  width: 100%;
+}
+.home-button {
+  width: 150px;
+  padding: 8px 16px;
+  margin: 20px;
+  font-size: 20px;
 }
 .boxes {
   display: grid;

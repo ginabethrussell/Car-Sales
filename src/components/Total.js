@@ -1,18 +1,20 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import {useParams} from 'react-router-dom';
 
 const Total = props => {
+  const params = useParams();
+  const id = params.id;
   return (
     <div className="content">
-      <h4>Total Amount: ${props.price + props.featurePrice}</h4>
+      <h4>Total Amount: ${props.cars[id].car.price + props.cars[id].car.features.reduce((total, item) => {return total + item.price}, 0)}</h4>
     </div>
   );
 };
 
 const mapStateToProps = (state) => {
   return {
-    price: state.car.price,
-    featurePrice: state.car.features.reduce((total, item) => {return total + item.price}, 0)
+    cars: state.cars,
   }
 }
 export default connect(mapStateToProps)(Total);
