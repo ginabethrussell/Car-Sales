@@ -1,18 +1,16 @@
 import React from 'react';
-import {useParams} from 'react-router-dom';
 import AdditionalFeature from './AdditionalFeature';
 import { connect } from 'react-redux';
 
 const AdditionalFeatures = props => {
-  const params = useParams();
-  const id = params.id;
+  
   return (
     <div className="content">
       <h4>Additional Features</h4>
-      {props.cars[id].additionalFeatures.length ? (
+      {props.additionalFeatures.length ? (
         <ol type="1">
-          {props.cars[id].additionalFeatures.map(item => (
-            <AdditionalFeature key={item.id} feature={item} />
+          {props.additionalFeatures.map(item => (
+            <AdditionalFeature key={item.id} feature={item} id={props.id}/>
           ))}
         </ol>
       ) : (
@@ -22,9 +20,9 @@ const AdditionalFeatures = props => {
   );
 };
 
-const mapStateToProps = (state) => {
+const mapStateToProps = (state, ownProps) => {
   return {
-    cars: state.cars
+    additionalFeatures: state.cars[ownProps.id].additionalFeatures
   }
 }
 

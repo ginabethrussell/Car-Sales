@@ -62,65 +62,64 @@ const teslaCars = [{
 const initialState = {
     cars: teslaCars
 }
-// const initialState = {
-//     additionalPrice: 0,
-//     car: {
-//       price: 26395,
-//       name: '2019 Ford Mustang',
-//       image:
-//         'https://cdn.motor1.com/images/mgl/0AN2V/s1/2019-ford-mustang-bullitt.jpg',
-//       features: []
-//     },
-//     additionalFeatures: [
-//       { id: 1, name: 'V-6 engine', price: 1500 },
-//       { id: 2, name: 'Racing detail package', price: 1500 },
-//       { id: 3, name: 'Premium sound system', price: 500 },
-//       { id: 4, name: 'Rear spoiler', price: 250 }
-//     ]
-//   };
 
 export const reducer = (state=initialState, action) => {
     switch(action.type){
         case ADD_FEATURE:
-            console.log("adding new feature in reducer with id", action.payload); 
-            const newFeature =  state.cars[action.payload.index].additionalFeatures.filter(item => item.id === action.payload.itemId)[0];
-            console.log(newFeature);
+          // console.log("adding new feature in reducer with id", action.payload); 
 
-            let carToAddFeature= state.cars[action.payload.index];
-            console.log(state.cars[action.payload.index].car.features);
-            const isAdded = state.cars[action.payload.index].car.features.filter((feature) => feature.id === newFeature.id); 
-            if (isAdded.length === 0){
-                carToAddFeature = {...carToAddFeature,
-                  car: {
-                    ...carToAddFeature.car,
-                    features: [...carToAddFeature.car.features,{...newFeature} ]
+          // get feature to add
+          const newFeature =  state.cars[action.payload.index].additionalFeatures.filter(item => item.id === action.payload.itemId)[0];
+          // console.log('adding', newFeature);
+
+          // get car to update
+          let carToAddFeature= state.cars[action.payload.index];
+          // console.log(state.cars[action.payload.index].car.features);
+
+          // check to make sure feature has not already been added
+          const isAdded = state.cars[action.payload.index].car.features.filter((feature) => feature.id === newFeature.id); 
+          if (isAdded.length === 0){
+            carToAddFeature = {
+              // create copy of car object to update
+              ...carToAddFeature,
+              additionalPrice: carToAddFeature.additionalPrice + newFeature.price,
+              car: {
+                  ...carToAddFeature.car,
+                    features: [...carToAddFeature.car.features, {...newFeature} ]
                   }
-                }
-                const carsArray = state.cars;
-                carsArray[action.payload.index] = carToAddFeature;
-                console.log('updatedcararray', carsArray)
-                return {...state, 
+              }
+
+              const carsArray = state.cars;
+              // replace car at action.payload.index with updated car
+              carsArray[action.payload.index] = carToAddFeature;
+
+              return {
+                ...state, 
                 cars: [...carsArray]
-                }
+              }
             } else {
               return state;
             }
                  
         case REMOVE_FEATURE:
-          console.log("removing feature in reducer with index", action.payload.index); 
+          // console.log("removing feature in reducer with index", action.payload.index); 
           // grab car to update
           const carsArray = [...state.cars];
           let carToRemoveFeature = state.cars[action.payload.index];
-          // grab feature list from car to update
-          console.log(carToRemoveFeature);
-          let carFeatures = carToRemoveFeature.car.features;
 
+          // grab feature list from car to update
+          let carFeatures = carToRemoveFeature.car.features;
+          const featureRemoved = carFeatures.filter(feature => feature.id === action.payload.itemId);
           carFeatures = carFeatures.filter(feature => feature.id !== action.payload.itemId)
           carToRemoveFeature.car.features = carFeatures;
+          carToRemoveFeature.additionalPrice -= featureRemoved[0].price
+
+          // replace car at action.payload.index with updated car
           carsArray[action.payload.index] = carToRemoveFeature;
-          return {...state, 
-                cars: [...carsArray]
-                }
+          return {
+            ...state, 
+            cars: [...carsArray]
+            }
             
         default:
             return state
